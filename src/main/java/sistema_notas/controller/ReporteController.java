@@ -25,93 +25,76 @@ public class ReporteController {
     @Autowired
     private DataSource dataSource;
 
+    // =========================
     // REPORTE GENERAL
+    // =========================
     @GetMapping("/alumnos")
     public ResponseEntity<byte[]> generarReporteAlumnos() throws Exception {
 
-        InputStream reporteStream =
-                new ClassPathResource(
-                        "reports/alumnos/reporte_alumnos.jasper"
-                ).getInputStream();
+        try (
+                InputStream reporteStream =
+                        new ClassPathResource("reports/alumnos/reporte_alumnos.jasper").getInputStream();
 
-        Map<String, Object> parametros = new HashMap<>();
+                InputStream logoStream =
+                        new ClassPathResource("reports/alumnos/logo.png").getInputStream();
 
-        parametros.put(
-                "LOGO",
-                new ClassPathResource(
-                        "reports/alumnos/logo.png"
-                ).getInputStream()
-        );
+                Connection conexion = dataSource.getConnection()
+        ) {
 
-        Connection conexion = dataSource.getConnection();
+            Map<String, Object> parametros = new HashMap<>();
+            parametros.put("LOGO", logoStream);
 
-        JasperPrint jasperPrint =
-                JasperFillManager.fillReport(
-                        reporteStream,
-                        parametros,
-                        conexion
-                );
+            JasperPrint jasperPrint =
+                    JasperFillManager.fillReport(
+                            reporteStream,
+                            parametros,
+                            conexion
+                    );
 
-        byte[] pdf =
-                JasperExportManager.exportReportToPdf(
-                        jasperPrint
-                );
+            byte[] pdf = JasperExportManager.exportReportToPdf(jasperPrint);
 
-        conexion.close();
-
-        return ResponseEntity.ok()
-                .header(
-                        HttpHeaders.CONTENT_DISPOSITION,
-                        "inline; filename=reporte_alumnos.pdf"
-                )
-                .contentType(MediaType.APPLICATION_PDF)
-                .body(pdf);
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=reporte_alumnos.pdf")
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .body(pdf);
+        }
     }
 
+    // =========================
     // REPORTE INDIVIDUAL
+    // =========================
     @GetMapping("/alumnos/{codigo}")
     public ResponseEntity<byte[]> generarReporteAlumno(
             @PathVariable String codigo
     ) throws Exception {
 
-        InputStream reporteStream =
-                new ClassPathResource(
-                        "reports/alumnos/reporte_alumno.jasper"
-                ).getInputStream();
+        try (
+                InputStream reporteStream =
+                        new ClassPathResource("reports/alumnos/reporte_alumno.jasper").getInputStream();
 
-        Map<String, Object> parametros = new HashMap<>();
+                InputStream logoStream =
+                        new ClassPathResource("reports/alumnos/logo.png").getInputStream();
 
-        parametros.put(
-                "LOGO",
-                new ClassPathResource(
-                        "reports/alumnos/logo.png"
-                ).getInputStream()
-        );
+                Connection conexion = dataSource.getConnection()
+        ) {
 
-        parametros.put("CODIGO", codigo);
+            Map<String, Object> parametros = new HashMap<>();
+            parametros.put("LOGO", logoStream);
+            parametros.put("CODIGO", codigo);
 
-        Connection conexion = dataSource.getConnection();
+            JasperPrint jasperPrint =
+                    JasperFillManager.fillReport(
+                            reporteStream,
+                            parametros,
+                            conexion
+                    );
 
-        JasperPrint jasperPrint =
-                JasperFillManager.fillReport(
-                        reporteStream,
-                        parametros,
-                        conexion
-                );
+            byte[] pdf = JasperExportManager.exportReportToPdf(jasperPrint);
 
-        byte[] pdf =
-                JasperExportManager.exportReportToPdf(
-                        jasperPrint
-                );
-
-        conexion.close();
-
-        return ResponseEntity.ok()
-                .header(
-                        HttpHeaders.CONTENT_DISPOSITION,
-                        "inline; filename=reporte_alumno.pdf"
-                )
-                .contentType(MediaType.APPLICATION_PDF)
-                .body(pdf);
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=reporte_alumno.pdf")
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .body(pdf);
+        }
     }
 }

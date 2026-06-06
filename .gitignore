@@ -1,0 +1,25 @@
+HELP.md
+
+# Archivos compilados Maven
+target/
+
+# Eclipse / STS
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+# IntelliJ
+.idea
+*.iws
+*.iml
+*.ipr
+
+# VS Code
+.vscode/
+
+# Logs
+*.log

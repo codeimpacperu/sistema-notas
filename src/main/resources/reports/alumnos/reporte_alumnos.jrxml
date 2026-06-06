@@ -12,7 +12,7 @@
 	telefono,
 	nombres,
 	id
-FROM sistema_notas_db.alumno]]>
+FROM alumno]]>
 	</queryString>
 	<field name="apellidos" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="apellidos"/>

@@ -11,21 +11,27 @@ RUN mvn clean package -DskipTests
 # ====== STAGE 2: RUN ======
 FROM eclipse-temurin:21-jdk
 
-# 🔥 IMPORTANTÍSIMO: dependencias gráficas para JasperReports
+# 🔥 DEPENDENCIAS CRÍTICAS PARA JASPER + FONTS + JAVA AWT
 RUN apt-get update && apt-get install -y \
+    libfreetype6 \
+    libfreetype6-dev \
     fontconfig \
     fonts-dejavu \
-    libfreetype6 \
+    libx11-6 \
+    libxext6 \
     libxrender1 \
     libxtst6 \
     libxi6 \
+    libxrandr2 \
+    libgtk-3-0 \
+    libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
 COPY --from=builder /app/target/*.jar app.jar
 
-# 👇 esto es correcto aquí
+# 🔥 IMPORTANTE PARA JASPER EN SERVIDOR
 ENV JAVA_TOOL_OPTIONS="-Djava.awt.headless=true"
 
 EXPOSE 8080

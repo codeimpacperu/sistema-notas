@@ -1,6 +1,16 @@
+# ====== STAGE 1: BUILD ======
+FROM maven:3.9.6-eclipse-temurin-21 AS builder
+
+WORKDIR /app
+
+COPY pom.xml .
+COPY src ./src
+
+RUN mvn clean package -DskipTests
+
+# ====== STAGE 2: RUN ======
 FROM eclipse-temurin:21-jdk
 
-# Instalar librerías necesarias para JasperReports
 RUN apt-get update && apt-get install -y \
     libfreetype6 \
     fontconfig \
@@ -9,7 +19,7 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
-COPY target/*.jar app.jar
+COPY --from=builder /app/target/*.jar app.jar
 
 ENV JAVA_TOOL_OPTIONS="-Djava.awt.headless=true"
 

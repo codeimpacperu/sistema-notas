@@ -3,11 +3,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporte_alumnos" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="22ebb6e2-a08f-4fed-9b95-69b6c1b822d1">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SistemaNotasDB"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<parameter name="LOGO" class="java.io.InputStream" isForPrompting="false">
-		<defaultValueExpression><![CDATA[new java.io.FileInputStream(
-"D:/proyect/grupo8/sistema-notas/src/main/resources/reports/alumnos/logo.png"
-)]]></defaultValueExpression>
-	</parameter>
+	<parameter name="LOGO" class="java.io.InputStream" isForPrompting="false"/>
 	<parameter name="CODIGO" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT

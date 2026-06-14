@@ -97,4 +97,52 @@ public class ReporteController {
                     .body(pdf);
         }
     }
+
+
+
+    // =========================
+    // REPORTE MATRICULAS
+    // =========================
+
+    @GetMapping("/matriculas")
+public ResponseEntity<byte[]> generarReporteMatriculas() throws Exception {
+
+    InputStream reporteStream =
+            new ClassPathResource(
+                    "reports/matriculas/reporte_matriculas.jasper"
+            ).getInputStream();
+
+    Map<String, Object> parametros = new HashMap<>();
+
+    parametros.put(
+            "LOGO",
+            new ClassPathResource(
+                    "reports/alumnos/logo.png"
+            ).getInputStream()
+    );
+
+    Connection conexion = dataSource.getConnection();
+
+    JasperPrint jasperPrint =
+            JasperFillManager.fillReport(
+                    reporteStream,
+                    parametros,
+                    conexion
+            );
+
+    byte[] pdf =
+            JasperExportManager.exportReportToPdf(
+                    jasperPrint
+            );
+
+    conexion.close();
+
+    return ResponseEntity.ok()
+            .header(
+                    HttpHeaders.CONTENT_DISPOSITION,
+                    "inline; filename=reporte_matriculas.pdf"
+            )
+            .contentType(MediaType.APPLICATION_PDF)
+            .body(pdf);
+}
 }

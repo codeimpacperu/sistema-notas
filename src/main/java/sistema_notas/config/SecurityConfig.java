@@ -42,6 +42,7 @@ public class SecurityConfig {
                         ).permitAll()
 
                         .requestMatchers(
+                                "/dashboard",
                                 "/alumnos/**",
                                 "/docentes/**",
                                 "/matriculas/**",
@@ -57,7 +58,7 @@ public class SecurityConfig {
 
                         .loginPage("/login")
 
-                        .defaultSuccessUrl("/alumnos", true)
+                        .defaultSuccessUrl("/dashboard", true)
 
                         .failureUrl("/login?error=true")
 

@@ -8,6 +8,7 @@ import sistema_notas.entity.DetalleMatricula;
 import sistema_notas.entity.Matricula;
 import sistema_notas.repository.MatriculaRepository;
 import sistema_notas.service.MatriculaService;
+import java.util.List;
 
 @Service
 public class MatriculaServiceImpl implements MatriculaService {
@@ -25,5 +26,11 @@ public class MatriculaServiceImpl implements MatriculaService {
         }
 
         return matriculaRepository.save(matricula);
+    }
+
+    @Override
+    public List<Matricula> listarTodas() {
+
+        return matriculaRepository.findAll();
     }
 }

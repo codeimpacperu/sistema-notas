@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import sistema_notas.entity.Alumno;
+import sistema_notas.entity.Curso;
 import sistema_notas.entity.DetalleMatricula;
 import sistema_notas.entity.Matricula;
-
 import sistema_notas.repository.AlumnoRepository;
-
 import sistema_notas.service.MatriculaService;
+import sistema_notas.repository.CursoRepository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -28,52 +28,86 @@ public class MatriculaController {
     private final MatriculaService matriculaService;
 
     private final AlumnoRepository alumnoRepository;
+    private final CursoRepository cursoRepository;
 
     @GetMapping("/nuevo")
-    public String nuevo(Model model) {
+        public String nuevo(Model model) {
 
-        model.addAttribute(
-                "alumnos",
-                alumnoRepository.findAll()
-        );
+            model.addAttribute(
+                    "alumnos",
+                    alumnoRepository.findAll()
+            );
 
-        return "matricula/form";
-    }
+            model.addAttribute(
+                    "cursos",
+                    cursoRepository.findAll()
+            );
+
+            return "matricula/form";
+        }
 
     @PostMapping("/guardar")
-    public String guardar(Long alumnoId) {
+        public String guardar(
+                Long alumnoId,
+                Long[] cursoIds
+        ) {
 
-        Alumno alumno = alumnoRepository
-                .findById(alumnoId)
-                .orElse(null);
+    Alumno alumno = alumnoRepository
+            .findById(alumnoId)
+            .orElse(null);
 
-        Matricula matricula = new Matricula();
+    Matricula matricula = new Matricula();
 
-        matricula.setFecha(LocalDate.now());
+    matricula.setFecha(LocalDate.now());
 
-        matricula.setEstado("REGISTRADO");
+    matricula.setEstado("REGISTRADO");
 
-        matricula.setAlumno(alumno);
+    matricula.setAlumno(alumno);
 
-        List<DetalleMatricula> detalles = new ArrayList<>();
+    List<DetalleMatricula> detalles =
+            new ArrayList<>();
 
-        DetalleMatricula d1 = new DetalleMatricula();
-        d1.setCurso("Programación Java");
-        d1.setCiclo("2026-I");
-        d1.setNota(18.0);
+    if (cursoIds != null) {
 
-        DetalleMatricula d2 = new DetalleMatricula();
-        d2.setCurso("Base de Datos");
-        d2.setCiclo("2026-I");
-        d2.setNota(17.0);
+        for (Long cursoId : cursoIds) {
 
-        detalles.add(d1);
-        detalles.add(d2);
+            Curso curso = cursoRepository
+                    .findById(cursoId)
+                    .orElse(null);
 
-        matricula.setDetalles(detalles);
+            if (curso != null) {
 
-        matriculaService.guardarMatricula(matricula);
+                DetalleMatricula detalle =
+                        new DetalleMatricula();
 
-        return "redirect:/alumnos";
+                detalle.setCurso(curso);
+
+                detalle.setCiclo("2026-I");
+
+                detalle.setNota(0.0);
+
+                detalle.setMatricula(matricula);
+
+                detalles.add(detalle);
+            }
+        }
     }
+
+    matricula.setDetalles(detalles);
+
+    matriculaService.guardarMatricula(matricula);
+
+    return "redirect:/matriculas";
+}
+
+@GetMapping
+public String listar(Model model) {
+
+    model.addAttribute(
+            "matriculas",
+            matriculaService.listarTodas()
+    );
+
+    return "matricula/lista";
+}
 }

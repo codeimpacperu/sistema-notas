@@ -2,8 +2,10 @@ package sistema_notas.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import sistema_notas.entity.Alumno;
 import sistema_notas.repository.AlumnoRepository;
+import sistema_notas.repository.MatriculaRepository;
 import sistema_notas.service.AlumnoService;
 
 import java.util.List;
@@ -13,6 +15,7 @@ import java.util.List;
 public class AlumnoServiceImpl implements AlumnoService {
 
     private final AlumnoRepository alumnoRepository;
+    private final MatriculaRepository matriculaRepository;
 
     @Override
     public List<Alumno> listar() {
@@ -30,7 +33,13 @@ public class AlumnoServiceImpl implements AlumnoService {
     }
 
     @Override
+    @Transactional
     public void eliminar(Long id) {
+
+        // 1. eliminar dependencias primero (EVITA ERROR 500)
+        matriculaRepository.deleteByAlumnoId(id);
+
+        // 2. luego eliminar alumno
         alumnoRepository.deleteById(id);
     }
 }

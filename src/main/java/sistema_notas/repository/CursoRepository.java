@@ -1,5 +1,8 @@
 package sistema_notas.repository;
 
-public class CursoRepository {
-    
+import org.springframework.data.jpa.repository.JpaRepository;
+import sistema_notas.entity.Curso;
+
+public interface CursoRepository extends JpaRepository<Curso, Long> {
+
 }

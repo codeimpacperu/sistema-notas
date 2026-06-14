@@ -15,11 +15,13 @@ public class DetalleMatricula {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String curso;
-
     private String ciclo;
 
     private Double nota;
+
+    @ManyToOne
+    @JoinColumn(name = "curso_id")
+    private Curso curso;
 
     @ManyToOne
     @JoinColumn(name = "matricula_id")

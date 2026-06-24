@@ -1,97 +1,91 @@
-<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <link rel="icon" type="image/png" th:href="@{/img/favicon-96x96.png}">
+    <link rel="apple-touch-icon" th:href="@{/img/apple-touch-icon.png}">
     <title>Lista de Alumnos</title>
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
 </head>
 
 <body class="bg-light">
+    <div th:replace="~{fragments :: navbar}"></div>
 
 <div class="container mt-5">
 
     <div class="card shadow">
 
         <div class="card-header bg-primary text-white">
-
             <h3>Lista de Alumnos</h3>
-
         </div>
 
         <div class="card-body">
 
-        <div class="mb-3">
-
-            <a th:href="@{/alumnos/nuevo}"
-            class="btn btn-success">
-                Nuevo Alumno
-            </a>
-
-            <a th:href="@{/reportes/alumnos}"
-            target="_blank"
-            class="btn btn-primary">
-                📄 Reporte General
-            </a>
-
-        </div>
-
-    <table class="table table-bordered table-hover">
+            <!-- ✅ Botones solo visibles para ADMIN y DOCENTE -->
+            <div class="mb-3" th:if="${esAdmin or esDocente}">
+                <a th:href="@{/alumnos/nuevo}" class="btn btn-success">
+                    Nuevo Alumno
+                </a>
+                <a th:href="@{/reportes/alumnos}" target="_blank" class="btn btn-primary">
+                    📄 Reporte General
+                </a>
+            </div>
 
             <table class="table table-bordered table-hover">
 
                 <thead class="table-dark">
-
-                <tr>
-                    <th>ID</th>
-                    <th>Nombres</th>
-                    <th>Apellidos</th>
-                    <th>Código</th>
-                    <th>DNI</th>
-                    <th>Acciones</th>
-                </tr>
-
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombres</th>
+                        <th>Apellidos</th>
+                        <th>Código</th>
+                        <th>DNI</th>
+                        <th>Acciones</th>
+                    </tr>
                 </thead>
 
                 <tbody>
+                    <tr th:each="a : ${alumnos}">
 
-                <tr th:each="a : ${alumnos}">
+                        <td th:text="${a.id}"></td>
+                        <td th:text="${a.nombres}"></td>
+                        <td th:text="${a.apellidos}"></td>
+                        <td th:text="${a.codigo}"></td>
+                        <td th:text="${a.dni}"></td>
 
-                    <td th:text="${a.id}"></td>
+                        <td>
+                            <!-- ✅ Editar: solo ADMIN -->
+                            <a th:if="${esAdmin}"
+                               th:href="@{/alumnos/editar/{id}(id=${a.id})}"
+                               class="btn btn-warning btn-sm">
+                                Editar
+                            </a>
 
-                    <td th:text="${a.nombres}"></td>
+                            <!-- ✅ Eliminar: solo ADMIN -->
+                            <a th:if="${esAdmin}"
+                               th:href="@{/alumnos/eliminar/{id}(id=${a.id})}"
+                               class="btn btn-danger btn-sm">
+                                Eliminar
+                            </a>
 
-                    <td th:text="${a.apellidos}"></td>
+                            <!-- ✅ PDF: solo ADMIN y DOCENTE -->
+                            <a th:if="${esAdmin or esDocente}"
+                               th:href="@{/reportes/alumnos/{codigo}(codigo=${a.codigo})}"
+                               target="_blank"
+                               class="btn btn-primary btn-sm">
+                                PDF
+                            </a>
 
-                    <td th:text="${a.codigo}"></td>
+                            <!-- ✅ Historial: todos incluyendo ESTUDIANTE -->
+                            <a th:href="@{/reportes/alumnos/{codigo}/historial(codigo=${a.codigo})}"
+                               target="_blank"
+                               class="btn btn-dark btn-sm">
+                                Historial
+                            </a>
+                        </td>
 
-                    <td th:text="${a.dni}"></td>
-
-                    <td>
-
-                        <a th:href="@{/alumnos/editar/{id}(id=${a.id})}"
-                           class="btn btn-warning btn-sm">
-                            Editar
-                        </a>
-
-                        <a th:href="@{/alumnos/eliminar/{id}(id=${a.id})}"
-                           class="btn btn-danger btn-sm">
-                            Eliminar
-                        </a>
-
-                        <a th:href="@{/reportes/alumnos/{codigo}(codigo=${a.codigo})}"
-                           target="_blank"
-                           class="btn btn-primary btn-sm">
-                            PDF
-                        </a>
-
-                    </td>
-
-                </tr>
-
+                    </tr>
                 </tbody>
 
             </table>

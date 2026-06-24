@@ -6,11 +6,10 @@ public class TestPassword {
 
     public static void main(String[] args) {
 
-        BCryptPasswordEncoder encoder =
-                new BCryptPasswordEncoder();
+        String password = "123456";
 
-        System.out.println(
-                encoder.encode("123456")
-        );
+        String encoded = new BCryptPasswordEncoder().encode(password);
+
+        System.out.println("PASSWORD ENCRIPTADO: " + encoded);
     }
 }

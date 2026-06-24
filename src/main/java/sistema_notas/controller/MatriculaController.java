@@ -1,20 +1,18 @@
 package sistema_notas.controller;
 
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import sistema_notas.entity.Alumno;
 import sistema_notas.entity.Curso;
 import sistema_notas.entity.DetalleMatricula;
 import sistema_notas.entity.Matricula;
 import sistema_notas.repository.AlumnoRepository;
-import sistema_notas.service.MatriculaService;
 import sistema_notas.repository.CursoRepository;
+import sistema_notas.repository.MatriculaRepository;
+import sistema_notas.service.MatriculaService;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -26,88 +24,84 @@ import java.util.List;
 public class MatriculaController {
 
     private final MatriculaService matriculaService;
-
     private final AlumnoRepository alumnoRepository;
     private final CursoRepository cursoRepository;
+    private final MatriculaRepository matriculaRepository;
+
+    private static final String PERIODO = "2026-I";
 
     @GetMapping("/nuevo")
-        public String nuevo(Model model) {
+    public String nuevo(Model model) {
 
-            model.addAttribute(
-                    "alumnos",
-                    alumnoRepository.findAll()
-            );
+        model.addAttribute("alumnos", alumnoRepository.findAll());
+        model.addAttribute("cursos", cursoRepository.findAll());
 
-            model.addAttribute(
-                    "cursos",
-                    cursoRepository.findAll()
-            );
-
-            return "matricula/form";
-        }
+        return "matricula/form";
+    }
 
     @PostMapping("/guardar")
-        public String guardar(
-                Long alumnoId,
-                Long[] cursoIds
-        ) {
+    public String guardar(Long alumnoId, Long[] cursoIds) {
 
-    Alumno alumno = alumnoRepository
-            .findById(alumnoId)
-            .orElse(null);
+        Alumno alumno = alumnoRepository.findById(alumnoId).orElse(null);
+        if (alumno == null) return "redirect:/matriculas";
 
-    Matricula matricula = new Matricula();
+        // 🔥 BUSCAR MATRÍCULA EXISTENTE (EVITA DUPLICADOS)
+        Matricula matricula = matriculaRepository
+                .findByAlumnoIdAndPeriodo(alumnoId, PERIODO)
+                .orElse(null);
 
-    matricula.setFecha(LocalDate.now());
+        if (matricula == null) {
+            matricula = new Matricula();
+            matricula.setFecha(LocalDate.now());
+            matricula.setEstado("REGISTRADO");
+            matricula.setPeriodo(PERIODO);
+            matricula.setAlumno(alumno);
+            matricula.setDetalles(new ArrayList<>());
+        }
 
-    matricula.setEstado("REGISTRADO");
+        List<DetalleMatricula> detalles = matricula.getDetalles();
 
-    matricula.setAlumno(alumno);
+        if (detalles == null) {
+            detalles = new ArrayList<>();
+        }
 
-    List<DetalleMatricula> detalles =
-            new ArrayList<>();
-
-    if (cursoIds != null) {
-
+        // 🔥 EVITAR DUPLICAR CURSOS
         for (Long cursoId : cursoIds) {
 
-            Curso curso = cursoRepository
-                    .findById(cursoId)
-                    .orElse(null);
+            Curso curso = cursoRepository.findById(cursoId).orElse(null);
 
             if (curso != null) {
 
-                DetalleMatricula detalle =
-                        new DetalleMatricula();
+                boolean yaExiste = detalles.stream()
+                        .anyMatch(d -> d.getCurso().getId().equals(cursoId));
 
-                detalle.setCurso(curso);
+                if (!yaExiste) {
 
-                detalle.setCiclo("2026-I");
+                    DetalleMatricula detalle = new DetalleMatricula();
+                    detalle.setCurso(curso);
+                    detalle.setCiclo(PERIODO);
+                    detalle.setNota(0.0);
+                    detalle.setMatricula(matricula);
 
-                detalle.setNota(0.0);
-
-                detalle.setMatricula(matricula);
-
-                detalles.add(detalle);
+                    detalles.add(detalle);
+                }
             }
         }
+
+        matricula.setDetalles(detalles);
+        matriculaService.guardarMatricula(matricula);
+
+        return "redirect:/matriculas";
     }
 
-    matricula.setDetalles(detalles);
+    @GetMapping
+    public String listar(Model model) {
 
-    matriculaService.guardarMatricula(matricula);
+        model.addAttribute(
+                "matriculas",
+                matriculaService.listarTodas()
+        );
 
-    return "redirect:/matriculas";
-}
-
-@GetMapping
-public String listar(Model model) {
-
-    model.addAttribute(
-            "matriculas",
-            matriculaService.listarTodas()
-    );
-
-    return "matricula/lista";
-}
+        return "matricula/lista";
+    }
 }

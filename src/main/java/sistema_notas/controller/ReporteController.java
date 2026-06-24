@@ -145,4 +145,98 @@ public ResponseEntity<byte[]> generarReporteMatriculas() throws Exception {
             .contentType(MediaType.APPLICATION_PDF)
             .body(pdf);
 }
+
+
+@GetMapping("/notas")
+public ResponseEntity<byte[]> generarReporteNotas() throws Exception {
+
+    InputStream reporteStream =
+            new ClassPathResource(
+                    "reports/notas/reporte_notas.jasper"
+            ).getInputStream();
+
+    Map<String, Object> parametros =
+            new HashMap<>();
+
+    parametros.put(
+            "LOGO",
+            new ClassPathResource(
+                    "reports/notas/logo.png"
+            ).getInputStream()
+    );
+
+    Connection conexion =
+            dataSource.getConnection();
+
+    JasperPrint jasperPrint =
+            JasperFillManager.fillReport(
+                    reporteStream,
+                    parametros,
+                    conexion
+            );
+
+    byte[] pdf =
+            JasperExportManager.exportReportToPdf(
+                    jasperPrint
+            );
+
+    conexion.close();
+
+    return ResponseEntity.ok()
+            .header(
+                    HttpHeaders.CONTENT_DISPOSITION,
+                    "inline; filename=reporte_notas.pdf"
+            )
+            .contentType(MediaType.APPLICATION_PDF)
+            .body(pdf);
+}
+
+
+// =========================
+// REPORTE HISTORIAL ALUMNO
+// =========================
+@GetMapping("/alumnos/{codigo}/historial")
+public ResponseEntity<byte[]> generarHistorialAlumno(
+        @PathVariable String codigo
+) throws Exception {
+
+    InputStream reporteStream =
+            new ClassPathResource(
+                    "reports/alumnos/reporte_historial_alumno.jasper"
+            ).getInputStream();
+
+    Map<String, Object> parametros = new HashMap<>();
+
+    parametros.put(
+            "LOGO",
+            new ClassPathResource(
+                    "reports/alumnos/logo.png"
+            ).getInputStream()
+    );
+
+    parametros.put("CODIGO", codigo);
+
+    Connection conexion = dataSource.getConnection();
+
+    JasperPrint jasperPrint =
+            JasperFillManager.fillReport(
+                    reporteStream,
+                    parametros,
+                    conexion
+            );
+
+    byte[] pdf =
+            JasperExportManager.exportReportToPdf(jasperPrint);
+
+    conexion.close();
+
+    return ResponseEntity.ok()
+            .header(
+                    HttpHeaders.CONTENT_DISPOSITION,
+                    "inline; filename=historial_alumno.pdf"
+            )
+            .contentType(MediaType.APPLICATION_PDF)
+            .body(pdf);
+}
+
 }

@@ -5,4 +5,7 @@ import sistema_notas.entity.DetalleMatricula;
 
 public interface DetalleMatriculaRepository
         extends JpaRepository<DetalleMatricula, Long> {
+
+    void deleteByCurso_Id(Long cursoId);
+
 }

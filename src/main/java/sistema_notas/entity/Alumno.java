@@ -41,6 +41,16 @@ public class Alumno {
 
     private Boolean estado;
 
+    // =========================
+    // 🔥 RELACIÓN CON USUARIO
+    // =========================
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
+
+    // =========================
+    // RELACIÓN MATRÍCULAS
+    // =========================
     @OneToMany(mappedBy = "alumno")
     private List<Matricula> matriculas;
 }

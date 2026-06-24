@@ -17,4 +17,6 @@ public interface DocenteService {
     List<Docente> buscarPorEspecialidad(String especialidad);
 
     List<Docente> buscarPorEspecialidadJPQL(String especialidad);
+
+    Docente getDocenteLogueado();
 }

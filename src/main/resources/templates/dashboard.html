@@ -4,6 +4,10 @@
 <head>
 
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" type="image/png" th:href="@{/img/favicon-96x96.png}">
+    <link rel="apple-touch-icon" th:href="@{/img/apple-touch-icon.png}">
 
     <title>Sistema de Notas</title>
 
@@ -103,7 +107,7 @@
         </div>
 
         <!-- MATRICULAS -->
-        <div class="col-md-6">
+        <div class="col-md-4">
 
             <div class="card shadow h-100">
 
@@ -126,8 +130,32 @@
 
         </div>
 
+        <!-- NOTAS -->
+        <div class="col-md-4">
+
+            <div class="card shadow h-100">
+
+                <div class="card-body text-center">
+
+                    <h2>📊</h2>
+
+                    <h4>Notas</h4>
+
+                    <a th:href="@{/notas}"
+                       class="btn btn-secondary">
+
+                        Ingresar
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
         <!-- REPORTES -->
-        <div class="col-md-6">
+        <div class="col-md-4">
 
             <div class="card shadow h-100">
 
@@ -150,6 +178,17 @@
             </div>
 
         </div>
+
+    </div>
+
+    <div class="text-center mt-5">
+
+        <a th:href="@{/logout}"
+           class="btn btn-dark">
+
+            Cerrar Sesión
+
+        </a>
 
     </div>
 

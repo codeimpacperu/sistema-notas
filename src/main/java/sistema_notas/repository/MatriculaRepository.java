@@ -5,9 +5,14 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.transaction.annotation.Transactional;
 import sistema_notas.entity.Matricula;
 
+import java.util.Optional;
+
 public interface MatriculaRepository extends JpaRepository<Matricula, Long> {
 
     @Modifying
     @Transactional
     void deleteByAlumnoId(Long alumnoId);
+
+    // 🔥 CLAVE DEL SISTEMA PROFESIONAL
+    Optional<Matricula> findByAlumnoIdAndPeriodo(Long alumnoId, String periodo);
 }

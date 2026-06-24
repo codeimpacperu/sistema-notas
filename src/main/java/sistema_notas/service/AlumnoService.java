@@ -3,6 +3,7 @@ package sistema_notas.service;
 import sistema_notas.entity.Alumno;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AlumnoService {
 
@@ -14,4 +15,6 @@ public interface AlumnoService {
 
     void eliminar(Long id);
 
+    // ✅ Busca el alumno por el username de su usuario asociado
+    Optional<Alumno> buscarPorUsername(String username);
 }

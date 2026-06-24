@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporte_alumnos" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="22ebb6e2-a08f-4fed-9b95-69b6c1b822d1">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SistemaNotasDB"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="LOGO" class="java.io.InputStream"/>
+	<parameter name="CODIGO" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+    a.codigo,
+    CONCAT(a.nombres, ' ', a.apellidos) AS alumno,
+    c.nombre AS curso,
+    n.tipo_evaluacion,
+    n.nota
+FROM nota n
+INNER JOIN alumno a ON n.alumno_id = a.id
+INNER JOIN curso c ON n.curso_id = c.id
+WHERE a.codigo = $P{CODIGO}
+ORDER BY c.nombre, n.tipo_evaluacion]]>
+	</queryString>
+	<field name="codigo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codigo"/>
+		<property name="com.jaspersoft.studio.field.label" value="codigo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="alumno"/>
+	</field>
+	<field name="alumno" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="alumno"/>
+		<property name="com.jaspersoft.studio.field.label" value="alumno"/>
+	</field>
+	<field name="curso" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.label" value="curso"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="curso"/>
+	</field>
+	<field name="tipo_evaluacion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tipo_evaluacion"/>
+		<property name="com.jaspersoft.studio.field.label" value="tipo_evaluacion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="nota"/>
+	</field>
+	<field name="nota" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="nota"/>
+		<property name="com.jaspersoft.studio.field.label" value="nota"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="nota"/>
+	</field>
+	<variable name="PROMEDIO" class="java.lang.Double" calculation="Average">
+		<variableExpression><![CDATA[$F{nota}]]></variableExpression>
+	</variable>
+	<variable name="ESTADO" class="java.lang.String">
+		<variableExpression><![CDATA[$V{PROMEDIO} >= 13 ? "APROBADO" : "DESAPROBADO"]]></variableExpression>
+	</variable>
+	<group name="AlumnoGroup">
+		<groupExpression><![CDATA[$F{codigo}]]></groupExpression>
+		<groupHeader>
+			<band height="30">
+				<textField>
+					<reportElement x="90" y="0" width="200" height="30" uuid="9b022697-1896-4493-ab1c-d64e38b598c7"/>
+					<textFieldExpression><![CDATA[$F{alumno}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="0" width="90" height="30" uuid="7fe7c7fa-3575-4b62-847c-20294074c2fb"/>
+					<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="50">
+				<textField>
+					<reportElement x="290" y="0" width="100" height="30" uuid="fe02db33-6f6a-4a16-a835-fd1670abc60b"/>
+					<textFieldExpression><![CDATA[$V{PROMEDIO}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="376" y="0" width="120" height="30" uuid="b4b49a97-c56c-4066-8431-7b738cb88cf1"/>
+					<textFieldExpression><![CDATA[$V{ESTADO}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="199" y="0" width="90" height="30" uuid="6ac9d252-b4a9-43c7-83f9-73eb493e0d50"/>
+					<text><![CDATA[Promedio General]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="110">
+			<image>
+				<reportElement x="227" y="0" width="100" height="100" uuid="37f154c5-ec8e-4835-8567-cce2f8aaaf1f"/>
+				<imageExpression><![CDATA[$P{LOGO}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="205" y="30" width="145" height="30" uuid="c7a43486-a326-4975-9e48-140f244f0ee6"/>
+				<text><![CDATA[REPORTE HISTORIAL NOTAS]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="444" y="35" width="100" height="30" uuid="9283dcee-1059-4b32-b796-3618324e3eb0"/>
+				<textFieldExpression><![CDATA["Fecha: " + new java.text.SimpleDateFormat("dd/MM/yyyy")
+                    .format(new java.util.Date())]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="32">
+			<staticText>
+				<reportElement x="242" y="2" width="138" height="30" uuid="5e9decba-3015-4972-bb17-f3f52a329ad3"/>
+				<text><![CDATA[curso]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="480" y="1" width="72" height="30" uuid="aeb65044-3be8-44ec-aeea-5a2e98e06ac9"/>
+				<text><![CDATA[nota]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="2" width="69" height="30" uuid="6dc8e3f5-1478-4fd0-aeab-e976fcfd5235"/>
+				<text><![CDATA[codigo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="90" y="2" width="69" height="30" uuid="7d8d50cb-f335-499a-97f9-8baf0b7d99b2"/>
+				<text><![CDATA[alumno]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="2" width="100" height="30" uuid="47cc5ee8-689d-4092-8a6b-3b79e0fced2b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="390c07bf-470b-40c8-8009-abadf21ce47b"/>
+				</reportElement>
+				<text><![CDATA[tipo_evaluacion]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="44">
+			<textField>
+				<reportElement x="242" y="0" width="138" height="30" uuid="a6ca1b96-ff8c-454a-b099-0d35439ee4bd"/>
+				<textFieldExpression><![CDATA[$F{curso}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="480" y="0" width="72" height="30" uuid="99b66dc6-9e4b-4863-b71e-6e6a417ca18e"/>
+				<textFieldExpression><![CDATA[$F{nota}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="0" width="100" height="30" uuid="7fc42315-723e-4c4f-b384-8ce19ee67dd2">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="390c07bf-470b-40c8-8009-abadf21ce47b"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{tipo_evaluacion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="40">
+			<textField>
+				<reportElement x="231" y="0" width="100" height="30" uuid="ab015b45-1ede-49dc-beff-076198ce2bcf"/>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="46"/>
+	</summary>
+</jasperReport>

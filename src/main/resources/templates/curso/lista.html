@@ -31,12 +31,8 @@
 
         <div class="card-body">
 
-            <a th:href="@{/cursos/nuevo}"
-               class="btn btn-success mb-3">
-
-                Nuevo Curso
-
-            </a>
+             <!-- Volver al inicio -->
+                <a th:href="@{/}" class="btn btn-secondary mb-3">← Volver</a>
 
             <table class="table table-bordered table-hover">
 
@@ -94,12 +90,6 @@
 
                         </a>
 
-                        <a th:href="@{/cursos/eliminar/{id}(id=${c.id})}"
-                           class="btn btn-danger btn-sm">
-
-                            Eliminar
-
-                        </a>
 
                     </td>
 

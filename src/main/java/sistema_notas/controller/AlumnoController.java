@@ -29,7 +29,7 @@ public class AlumnoController {
                 .contains(new SimpleGrantedAuthority("ROLE_ESTUDIANTE"));
 
         if (esEstudiante) {
-            // ✅ ESTUDIANTE: solo ve su propio registro
+            // ROL ESTUDIANTE
             String username = authentication.getName();
             Alumno alumno = alumnoService.buscarPorUsername(username).orElse(null);
 
@@ -37,7 +37,7 @@ public class AlumnoController {
                 return "redirect:/login?error";
             }
 
-            // ✅ Pasa lista con solo su registro
+            // LISTAR POR REGISTRO USUARIO
             model.addAttribute("alumnos", java.util.List.of(alumno));
             model.addAttribute("esAdmin", false);
             model.addAttribute("esDocente", false);

@@ -12,9 +12,9 @@ public interface AlumnoRepository extends JpaRepository<Alumno, Long> {
 
     List<Alumno> findByNombresContaining(String nombres);
 
-    // ✅ Verifica si ya existe un alumno con ese código
+    // Verifica si existe un alumno con ese código
     boolean existsByCodigo(String codigo);
 
-    // ✅ Busca el alumno por el username de su usuario asociado
+    // Busca alumno por el username
     Optional<Alumno> findByUsuario_Username(String username);
 }

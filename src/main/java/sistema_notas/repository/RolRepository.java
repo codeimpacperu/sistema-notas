@@ -7,6 +7,6 @@ import java.util.Optional;
 
 public interface RolRepository extends JpaRepository<Rol, Long> {
 
-    // 🔥 NECESARIO PARA ASIGNAR ROLES AUTOMÁTICOS
+    // asignar roles
     Optional<Rol> findByNombre(String nombre);
 }

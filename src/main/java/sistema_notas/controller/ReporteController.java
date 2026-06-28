@@ -25,9 +25,8 @@ public class ReporteController {
     @Autowired
     private DataSource dataSource;
 
-    // =========================
     // REPORTE GENERAL
-    // =========================
+
     @GetMapping("/alumnos")
     public ResponseEntity<byte[]> generarReporteAlumnos() throws Exception {
 
@@ -192,9 +191,8 @@ public ResponseEntity<byte[]> generarReporteNotas() throws Exception {
 }
 
 
-// =========================
 // REPORTE HISTORIAL ALUMNO
-// =========================
+
 @GetMapping("/alumnos/{codigo}/historial")
 public ResponseEntity<byte[]> generarHistorialAlumno(
         @PathVariable String codigo

@@ -45,7 +45,7 @@ public class MatriculaController {
         Alumno alumno = alumnoRepository.findById(alumnoId).orElse(null);
         if (alumno == null) return "redirect:/matriculas";
 
-        // 🔥 BUSCAR MATRÍCULA EXISTENTE (EVITA DUPLICADOS)
+        // BUSCAR MATRICULA DUPLICADO
         Matricula matricula = matriculaRepository
                 .findByAlumnoIdAndPeriodo(alumnoId, PERIODO)
                 .orElse(null);
@@ -65,7 +65,7 @@ public class MatriculaController {
             detalles = new ArrayList<>();
         }
 
-        // 🔥 EVITAR DUPLICAR CURSOS
+        // NO DUPLICAR CURSO
         for (Long cursoId : cursoIds) {
 
             Curso curso = cursoRepository.findById(cursoId).orElse(null);

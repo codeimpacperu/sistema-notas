@@ -13,6 +13,6 @@ public interface MatriculaRepository extends JpaRepository<Matricula, Long> {
     @Transactional
     void deleteByAlumnoId(Long alumnoId);
 
-    // 🔥 CLAVE DEL SISTEMA PROFESIONAL
+   
     Optional<Matricula> findByAlumnoIdAndPeriodo(Long alumnoId, String periodo);
 }

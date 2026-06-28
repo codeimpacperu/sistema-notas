@@ -30,7 +30,6 @@ public interface NotaRepository
 
     void deleteByCurso_Id(Long cursoId);
 
-    // ✅ agregado
     void deleteByAlumno_Id(Long alumnoId);
 
 }

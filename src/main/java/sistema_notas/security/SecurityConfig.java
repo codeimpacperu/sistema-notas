@@ -27,13 +27,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
 
                     // Públicos
-                    // Públicos
                     .requestMatchers("/login", "/img/**", "/css/**", "/js/**", "/test").permitAll()
 
-                    // Raíz y dashboard: cualquier autenticado
+                    // Raíz y dashboard
                     .requestMatchers("/", "/dashboard").authenticated()
 
-                    // ESTUDIANTE: solo su perfil e historial propio
+                    // ESTUDIANTE solo su perfil
                     .requestMatchers("/alumnos/mi-perfil")
                         .hasAnyRole("ESTUDIANTE", "ADMIN", "DOCENTE")
                     .requestMatchers("/reportes/alumnos/*/historial")
@@ -45,11 +44,11 @@ public class SecurityConfig {
                     .requestMatchers("/alumnos/nuevo", "/alumnos/guardar")
                         .hasAnyRole("ADMIN", "DOCENTE")
 
-                    // ✅ ESTUDIANTE ahora puede entrar solo a /alumnos (listado)
+                    // alumnos (listado)
                     .requestMatchers("/alumnos")
                         .hasAnyRole("ADMIN", "DOCENTE", "ESTUDIANTE")
 
-                    // ✅ ADMIN: acceso total a todo lo demás
+                    // ADMIN acceso total
                     .anyRequest().hasRole("ADMIN")
                 )
                 .formLogin(form -> form

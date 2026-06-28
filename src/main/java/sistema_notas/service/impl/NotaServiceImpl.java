@@ -72,7 +72,7 @@ public class NotaServiceImpl implements NotaService {
         nota.setDocente(docente);
 
         // =========================
-        // 3. VALIDACIÓN DE DUPLICADOS (FIX REAL)
+        // 3. VALIDACIÓN DE DUPLICADOS
         // =========================
         Optional<Nota> existente = notaRepository
                 .findByAlumno_IdAndCurso_IdAndTipoEvaluacion(

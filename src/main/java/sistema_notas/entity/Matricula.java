@@ -22,7 +22,6 @@ public class Matricula {
 
     private String estado;
 
-    // 🔥 NUEVO CAMPO (CLAVE DEL DISEÑO PROFESIONAL)
     private String periodo;
 
     @ManyToOne

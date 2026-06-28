@@ -23,9 +23,7 @@ public class NotaController {
     private final CursoRepository cursoRepository;
     private final DocenteRepository docenteRepository;
 
-    // =========================
     // LISTAR
-    // =========================
     @GetMapping
     public String listar(@RequestParam(required = false) String buscar,
                          Model model) {
@@ -40,9 +38,7 @@ public class NotaController {
         return "nota/lista";
     }
 
-    // =========================
     // NUEVO
-    // =========================
     @GetMapping("/nuevo")
     public String nuevo(Model model) {
 
@@ -54,9 +50,7 @@ public class NotaController {
         return "nota/form";
     }
 
-    // =========================
     // GUARDAR
-    // =========================
     @PostMapping("/guardar")
     public String guardar(
             @RequestParam(required = false) Long id,

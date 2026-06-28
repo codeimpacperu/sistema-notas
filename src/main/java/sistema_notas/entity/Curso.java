@@ -25,7 +25,6 @@ public class Curso {
 
     private Boolean estado;
 
-    // ✅ Agrega esto:
     @ManyToOne
     @JoinColumn(name = "docente_id")
     private Docente docente;

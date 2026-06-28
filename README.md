@@ -6,7 +6,7 @@
 
 ## 👥 Integrantes
 
-| Nombre completo | Rol |
+| Nombre completo |
 |---|---|
 | Fred Anthoni Condori Nina |
 | Anthony Alberto Viza Chuctaya|
@@ -53,7 +53,7 @@ security     →  Autenticación y permisos
 |---|---|---|
 | `ADMIN` | Acceso total al sistema | Dashboard `/` |
 | `DOCENTE` | Gestión de notas y alumnos | `/notas` |
-| `ESTUDIANTE` | Solo su perfil e historial | `/alumnos/mi-perfil` |
+| `ESTUDIANTE` | Solo su perfil e historial | `/alumnos` |
 
 ---
 

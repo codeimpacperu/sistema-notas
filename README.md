@@ -126,15 +126,6 @@ mvn spring-boot:run
 http://localhost:8080
 ```
 
-### Credenciales por defecto
-| Usuario | Contraseña | Rol |
-|---|---|---|
-| `admin` | `123456` | ADMIN |
-
----
-
-## 📁 Estructura del proyecto
-
 ```
 sistema-notas/
 ├── src/main/java/sistema_notas/

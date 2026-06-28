@@ -8,10 +8,10 @@
 
 | Nombre completo | Rol |
 |---|---|
-| Fred Anthoni Condori Nina | Desarrollador |
-| Anthony Alberto Viza Chuctaya | Desarrollador |
-| Josue Obed Arizapana Alejo | Desarrollador |
-| Karl Edwars Delgado Davila | Desarrollador |
+| Fred Anthoni Condori Nina |
+| Anthony Alberto Viza Chuctaya|
+| Josue Obed Arizapana Alejo|
+| Karl Edwars Delgado Davila|
 
 **Docente:** Mtro. (c) Bocanegra Pinchi Yan Carlos
 

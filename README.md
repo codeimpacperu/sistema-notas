@@ -7,11 +7,11 @@
 ## 👥 Integrantes
 
 | Nombre completo |
-|---|---|
+|---|
 | Fred Anthoni Condori Nina |
-| Anthony Alberto Viza Chuctaya|
-| Josue Obed Arizapana Alejo|
-| Karl Edwars Delgado Davila|
+| Anthony Alberto Viza Chuctaya |
+| Josue Obed Arizapana Alejo |
+| Karl Edwars Delgado Davila |
 
 **Docente:** Mtro. (c) Bocanegra Pinchi Yan Carlos
 
